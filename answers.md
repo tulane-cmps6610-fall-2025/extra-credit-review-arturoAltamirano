@@ -48,11 +48,11 @@ This problem has optimal substructure because at every given timestep there is a
 
 Choosing the longer processing times introduces risk of overlap or time exhaustion, assuming these tasks are not weighted in any way the greedy criterion will be upheld by the fact that a shorter task chosen first will always yield a better completion to timestep ratio. 
 
-To prove this, we can consider that given a schedule of unweighted tasks, if we take on a longer processing time task before a shorter one we will at best suffer no penalty, but likely incur great risk of a suboptimal ratio. But if we swap to take the shorter task, we will ensure the greatest chance of completing an optimal amount of tasks and having a good ratio.
+To prove this, we can consider that given a schedule of unweighted tasks, if we take on a longer processing time task before a shorter one we will at best suffer no penalty, but likely incur great risk of a suboptimal ratio. But if we swap to take the shorter task, we will ensure the greatest chance of completing an optimal amount of tasks and having a good ratio and maximal task completion.
 
 For example: Given 10 seconds and 6 tasks of lengths: [5, 4, 1, 3, 2, 1]
 
-If we select the chronologically presented 5 and 4 tasks first, we essentially lock ourselves into completing just 3 tasks in this time frame and incur a poor ratio of 0.33 tasks to timestep ratio.
+For a counterexample: If we select the chronologically presented 5 and 4 tasks first, we essentially lock ourselves into completing just 3 tasks in this time frame and incur a poor ratio of 0.33 tasks to timestep ratio. This would incur a wait time of 9 seconds for just 2 tasks over the 10 second window. If no window is considered, we will still ensure maximal wait time by taking it all 'up front'
 
 But by scheduling the 1, 1, 3, and 2 tasks first, we harvest the most amount of tasks for our time and incur a better 0.40 task to timestep ratio.
 
@@ -80,8 +80,9 @@ This gives the optimal span of O(log n) because the exponential increase of work
 
 6. **Graphs**
 
-If the cycle is determined to be the one of the largest weight, it is impossible for it to be in a minimum spanning tree, because there is guaranteed to be a lighter cycle or sequence of nodes that will produce a more minimal tree, and by including the maximal cycle, you guarantee this lighter sequence will be missed.
+If we were to remove this heaviest edge and take the MST from the resulting graph it would inherently be smaller since any other option at that frontier would produce a more minimal value. Or be outright disconnected.
 
-If we were to take the lighter cycle and replace it with the heaviest, displacing all other vertices around this new artificially lightest cycle - we would eventually come to the conclusion that this was a component of the  minimum spanning tree solution. If at that point we were to reintroduce our previously removed lightest cycle, not only would it produce a more minimal spanning tree, but now any cut made along a frontier involving the largest weight cycle will be sub-optimal compared to the lighter cycle previously removed.
+To prove this let us consider all possibilities from the point of the maximal edge onward. If the maximal was removed, we would be left with a series of other edges connected by an inherently more minimal edge, since this is a cyclic graph, we know that their must be another edge to take and are not forced to rely on the maximal to stay connected.
 
+The resulting cyclic graph would now be connected by another edge, and would form a new MST. If these are still connected, and we know they must be, this would be of inherently smaller weight. We have formed a contradiction by doing this and revealing the falsehood of the maximal edge being within a cyclic graphs MST.
 
